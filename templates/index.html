@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sql Alchemy Practise</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+<div class="heading">
+    <h2>SQLALCHEMY TUTORIAL</h2>
+    {% for i in get_flashed_messages() %}
+        <p style="color: red;">{{i}}</p>
+    {% endfor %}
+</div>
+<hr>
+<div class="tutorial">
+    <code>users = db.session.execute(db.select(User).order_by(User.username)).scalars()</code>
+    -To retreive all data from the table using Sqlalchemy
+    <br><code>for user in users</code> - to iterate over elements
+    <br><code>user.username</code> - to retreive username
+    <br><code>user.email</code> - to retreive mail
+</div>
+<div class="userlist">
+    <ul>
+        {% for u in users %}
+        <li>{{u.username}} - {{u.email}} - <a href="/{{u.id}}/delete" type="button">Delete</a> </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="tutorial">
+    <code>user = db.get_or_404(User, id)</code>
+    <p>is used to retrieve a model object from the database.
+    If the model object is not found, the function will raise a 404 error.
+    The get_or_404() function takes two arguments: the model class and the primary key value.</p>
+    <p>To delete a data from database</p>
+    <code>db.session.delete(user)</code> - deleting an user from the DB
+    <br><code>db.session.commit()</code> - making changes
+</div>
+<div class="tutorial">
+    <code>username = request.form["username"]</code> - to fetch data from form
+    <br><code>email=request.form["email"]</code>
+    <p>To add data into database</p>
+    <code>user = User(username=username, email=email,)</code> - adding into User table
+    <br><code>db.session.add(user)</code> - adding table data into database
+    <br><code>db.session.commit()</code> - making changes
+</div>
+<div class="userform">
+    <form action="create" method="post">
+        <div>
+            <input type="text" name="username" placeholder="Username">
+        </div>
+        <div>
+            <input type="email" name="email" placeholder="Email">
+        </div>
+        <div>
+            <input type="submit" value="submit">
+        </div>
+    </form>
+</div>
+</body>
+</html>
